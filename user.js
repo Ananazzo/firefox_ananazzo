@@ -374,311 +374,126 @@ user_pref("toolkit.scrollbox.horizontalScrollDistance",         4);            /
 user_pref("toolkit.scrollbox.verticalScrollDistance",           3);            ///        3
 */
 
-// Disable Telemetry and Data Collection
-user_pref("browser.newtabpage.activity-stream.feeds.telemetry",     false);
-user_pref("browser.newtabpage.activity-stream.telemetry",     false);
-user_pref("browser.ping-centre.telemetry",     false);
-user_pref("datareporting.healthreport.service.enabled",     false);
-user_pref("datareporting.healthreport.uploadEnabled",     false);
-user_pref("datareporting.policy.dataSubmissionEnabled",     false);
-user_pref("datareporting.sessions.current.clean",     true);
-user_pref("devtools.onboarding.telemetry.logged",     false);
-user_pref("toolkit.telemetry.archive.enabled",     false);
-user_pref("toolkit.telemetry.bhrPing.enabled",     false);
-user_pref("toolkit.telemetry.enabled",     false);
-user_pref("toolkit.telemetry.firstShutdownPing.enabled",     false);
-user_pref("toolkit.telemetry.hybridContent.enabled",     false);
-user_pref("toolkit.telemetry.newProfilePing.enabled",     false);
-user_pref("toolkit.telemetry.prompted",     2);
-user_pref("detoolkit.telemetry.rejected",     true);
-user_pref("toolkit.telemetry.reportingpolicy.firstRun",     false);
-user_pref("toolkit.telemetry.server",     "");
-user_pref("toolkit.telemetry.shutdownPingSender.enabled",     false);
-user_pref("toolkit.telemetry.unified",     false);
-user_pref("toolkit.telemetry.unifiedIsOptIn",     false);
-user_pref("toolkit.telemetry.updatePing.enabled",     false);
-
+/****************************************************************************
+ * Fingerprinting Resistance and Privacy                                    *
+ ****************************************************************************/
+user_pref("privacy.resistFingerprinting", true); // General fingerprinting resistance
+user_pref("privacy.firstparty.isolate", true); // Isolate cookies and storage by the first party
+user_pref("network.http.referer.XOriginPolicy", 2); // Only send minimal referer info across domains
+user_pref("network.http.referer.trimmingPolicy", 2); // Trim referer headers to minimal data
+user_pref("privacy.resistFingerprinting.block_mozAddonManager", true); // Block addon manager leaks
+user_pref("media.peerconnection.enabled", false); // Disable WebRTC to prevent IP leaks
+user_pref("dom.battery.enabled", false); // Disable battery API (fingerprinting risk)
+user_pref("media.navigator.enabled", false); // Disable WebRTC APIs (prevent fingerprinting via device access)
+user_pref("dom.maxHardwareConcurrency", 2); // Limit cores exposed to reduce fingerprinting
+user_pref("privacy.window.name.update.enabled", true); // Protect window.name from leakage
 
 /****************************************************************************
- * Betterfox                                                                *
- * "Ad meliora"                                                             *
- * version: 130                                                             *
- * url: https://github.com/yokoffing/Betterfox                              *
-****************************************************************************/
+ * Google Search and Quad9 DNS-over-HTTPS                                    *
+ ****************************************************************************/
+user_pref("browser.search.defaultenginename", "Google"); // Use Google Search
+user_pref("network.trr.uri", "https://dns.quad9.net/dns-query"); // Use Quad9 for DNS-over-HTTPS
+user_pref("network.trr.mode", 3); // Enforce DNS-over-HTTPS for privacy
+user_pref("network.trr.bootstrapAddress", "9.9.9.9"); // Bootstrap Quad9 DNS server
+user_pref("network.security.esni.enabled", true); // Enable encrypted SNI to hide domain lookups
 
 /****************************************************************************
- * SECTION: FASTFOX                                                         *
-****************************************************************************/
-/** GENERAL ***/
-user_pref("content.notify.interval", 100000);
+ * Blocking Malicious Content: Phishing, Coin Miners, and Malicious URLs     *
+ ****************************************************************************/
+user_pref("browser.safebrowsing.malware.enabled", true); // Enable Safe Browsing for malware protection
+user_pref("browser.safebrowsing.phishing.enabled", true); // Enable phishing protection
+user_pref("browser.safebrowsing.downloads.remote.enabled", true); // Enable Safe Browsing for downloads
+user_pref("browser.safebrowsing.blockedURIs.enabled", true); // Block known malicious URLs
+user_pref("browser.safebrowsing.provider.google.gethashURL", ""); // Disable Google’s gethashURL to limit data collection
+user_pref("extensions.blocklist.enabled", true); // Block malicious extensions
+user_pref("extensions.blocklist.url", "https://blocklist.addons.mozilla.org/blocklist/3/%APP_ID%/%APP_VERSION%/"); // Extension blocklist
+user_pref("webchannel.allowObject.urlWhitelist", ""); // Restrict webchannel access for security
 
-/** GFX ***/
-user_pref("gfx.canvas.accelerated.cache-items", 4096);
+/****************************************************************************
+ * Annoyance Blocking: App Banners, Popups, Widgets, Cookie Notices, Ads     *
+ ****************************************************************************/
+// General UI annoyances
+user_pref("dom.disable_beforeunload", true); // Disable "Are you sure you want to leave?" popups
+user_pref("dom.popup_maximum", 0); // Block all popup windows
+user_pref("dom.event.contextmenu.enabled", false); // Disable context menu manipulations (stop popup menus)
+user_pref("privacy.popups.disable_from_plugins", 3); // Block all popups triggered by plugins
+user_pref("dom.push.enabled", false); // Disable push notifications
+user_pref("browser.uitour.enabled", false); // Disable Firefox tour prompts
+user_pref("permissions.default.desktop-notification", 2); // Block desktop notifications globally
+user_pref("browser.shell.checkDefaultBrowser", false); // Disable "Set as default browser" popup
+
+// Cookie and App banners
+user_pref("cookiebanners.service.mode", 1); // Automatically manage cookie banners
+user_pref("cookiebanners.service.mode.privateBrowsing", 1); // Manage cookie banners in private mode
+user_pref("privacy.firstparty.isolate", true); // Isolate all cookies by domain to limit tracking
+user_pref("network.cookie.cookieBehavior", 1); // Block third-party cookies
+user_pref("privacy.cookieBannerReduction", true); // Automatically hide cookie banners
+
+// Ad blocking and anti-tracking
+user_pref("browser.contentblocking.category", "strict"); // Strict blocking (trackers, ads, etc.)
+user_pref("extensions.adblockplus.currentVersion", true); // Use an ad blocker like Adblock Plus or uBlock Origin
+user_pref("network.dns.disablePrefetch", true); // Block prefetching (used by ads to load faster)
+user_pref("network.predictor.enabled", false); // Disable speculative connections (preloading trackers)
+user_pref("dom.serviceWorkers.enabled", false); // Disable service workers (often abused by ad networks)
+user_pref("network.prefetch-next", false); // Disable link prefetching
+
+/****************************************************************************
+ * Speed Optimizations: Keep the Browser Fast                                *
+ ****************************************************************************/
+user_pref("network.http.max-connections", 1800); // Increase max connections for faster browsing
+user_pref("network.http.max-persistent-connections-per-server", 10); // Increase persistent connections
+user_pref("gfx.canvas.accelerated.cache-items", 4096); // Increase canvas cache for smoother rendering
 user_pref("gfx.canvas.accelerated.cache-size", 512);
-user_pref("gfx.content.skia-font-cache-size", 20);
-
-/** DISK CACHE ***/
-user_pref("browser.cache.jsbc_compression_level", 3);
-
-/** MEDIA CACHE ***/
-user_pref("media.memory_cache_max_size", 65536);
-user_pref("media.cache_readahead_limit", 7200);
-user_pref("media.cache_resume_threshold", 3600);
-
-/** IMAGE CACHE ***/
-user_pref("image.mem.decode_bytes_at_a_time", 32768);
-
-/** NETWORK ***/
-user_pref("network.http.max-connections", 1800);
-user_pref("network.http.max-persistent-connections-per-server", 10);
-user_pref("network.http.max-urgent-start-excessive-connections-per-host", 5);
-user_pref("network.http.pacing.requests.enabled", false);
-user_pref("network.dnsCacheExpiration", 3600);
-user_pref("network.ssl_tokens_cache_capacity", 10240);
-
-/** SPECULATIVE LOADING ***/
-user_pref("network.dns.disablePrefetch", true);
-user_pref("network.dns.disablePrefetchFromHTTPS", true);
-user_pref("network.prefetch-next", false);
-user_pref("network.predictor.enabled", false);
-user_pref("network.predictor.enable-prefetch", false);
-
-/** EXPERIMENTAL ***/
-user_pref("dom.enable_web_task_scheduling", true);
+user_pref("image.mem.decode_bytes_at_a_time", 32768); // Optimize image cache loading
+user_pref("browser.cache.disk.enable", false); // Disable disk cache (enhances privacy and speed)
+user_pref("browser.cache.memory.enable", true); // Use memory cache for better performance
 
 /****************************************************************************
- * SECTION: SECUREFOX                                                       *
-****************************************************************************/
-/** TRACKING PROTECTION ***/
-user_pref("browser.contentblocking.category", "strict");
-user_pref("urlclassifier.trackingSkipURLs", "*.reddit.com, *.twitter.com, *.twimg.com, *.tiktok.com");
-user_pref("urlclassifier.features.socialtracking.skipURLs", "*.instagram.com, *.twitter.com, *.twimg.com");
-user_pref("network.cookie.sameSite.noneRequiresSecure", true);
-user_pref("browser.download.start_downloads_in_tmp_dir", true);
-user_pref("browser.helperApps.deleteTempFileOnExit", true);
-user_pref("browser.uitour.enabled", false);
-user_pref("privacy.globalprivacycontrol.enabled", true);
-
-/** OCSP & CERTS / HPKP ***/
-user_pref("security.OCSP.enabled", 0);
-user_pref("security.remote_settings.crlite_filters.enabled", true);
-user_pref("security.pki.crlite_mode", 2);
-
-/** SSL / TLS ***/
-user_pref("security.ssl.treat_unsafe_negotiation_as_broken", true);
-user_pref("browser.xul.error_pages.expert_bad_cert", true);
-user_pref("security.tls.enable_0rtt_data", false);
-
-/** DISK AVOIDANCE ***/
-user_pref("browser.privatebrowsing.forceMediaMemoryCache", true);
-user_pref("browser.sessionstore.interval", 60000);
-
-/** SHUTDOWN & SANITIZING ***/
-user_pref("privacy.history.custom", true);
-
-/** SEARCH / URL BAR ***/
-user_pref("browser.urlbar.trimHttps", true);
-user_pref("browser.urlbar.untrimOnUserInteraction.featureGate", true);
-user_pref("browser.search.separatePrivateDefault.ui.enabled", true);
-user_pref("browser.urlbar.update2.engineAliasRefresh", true);
-user_pref("browser.search.suggest.enabled", false);
-user_pref("browser.urlbar.quicksuggest.enabled", false);
-user_pref("browser.urlbar.suggest.quicksuggest.sponsored", false);
-user_pref("browser.urlbar.suggest.quicksuggest.nonsponsored", false);
-user_pref("browser.urlbar.groupLabels.enabled", false);
-user_pref("browser.formfill.enable", false);
-user_pref("security.insecure_connection_text.enabled", true);
-user_pref("security.insecure_connection_text.pbmode.enabled", true);
-user_pref("network.IDN_show_punycode", true);
-
-/** HTTPS-FIRST POLICY ***/
-user_pref("dom.security.https_first", true);
-
-/** PASSWORDS ***/
-user_pref("signon.formlessCapture.enabled", false);
-user_pref("signon.privateBrowsingCapture.enabled", false);
-user_pref("network.auth.subresource-http-auth-allow", 1);
-user_pref("editor.truncate_user_pastes", false);
-
-/** MIXED CONTENT + CROSS-SITE ***/
-user_pref("security.mixed_content.block_display_content", true);
-user_pref("pdfjs.enableScripting", false);
-
-/** EXTENSIONS ***/
-user_pref("extensions.enabledScopes", 5);
-
-/** HEADERS / REFERERS ***/
-user_pref("network.http.referer.XOriginTrimmingPolicy", 2);
-
-/** CONTAINERS ***/
-user_pref("privacy.userContext.ui.enabled", true);
-
-/** SAFE BROWSING ***/
-user_pref("browser.safebrowsing.downloads.remote.enabled", false);
-
-/** MOZILLA ***/
-user_pref("permissions.default.desktop-notification", 2);
-user_pref("permissions.default.geo", 2);
-user_pref("permissions.manager.defaultsUrl", "");
-user_pref("webchannel.allowObject.urlWhitelist", "");
-
-/** TELEMETRY ***/
-user_pref("datareporting.policy.dataSubmissionEnabled", false);
-user_pref("datareporting.healthreport.uploadEnabled", false);
-user_pref("toolkit.telemetry.unified", false);
-user_pref("toolkit.telemetry.enabled", false);
-user_pref("toolkit.telemetry.server", "data:,");
-user_pref("toolkit.telemetry.archive.enabled", false);
-user_pref("toolkit.telemetry.newProfilePing.enabled", false);
-user_pref("toolkit.telemetry.shutdownPingSender.enabled", false);
-user_pref("toolkit.telemetry.updatePing.enabled", false);
-user_pref("toolkit.telemetry.bhrPing.enabled", false);
-user_pref("toolkit.telemetry.firstShutdownPing.enabled", false);
-user_pref("toolkit.telemetry.coverage.opt-out", true);
-user_pref("toolkit.coverage.opt-out", true);
-user_pref("toolkit.coverage.endpoint.base", "");
-user_pref("browser.newtabpage.activity-stream.feeds.telemetry", false);
-user_pref("browser.newtabpage.activity-stream.telemetry", false);
-
-/** EXPERIMENTS ***/
-user_pref("app.shield.optoutstudies.enabled", false);
-user_pref("app.normandy.enabled", false);
-user_pref("app.normandy.api_url", "");
-
-/** CRASH REPORTS ***/
-user_pref("breakpad.reportURL", "");
-user_pref("browser.tabs.crashReporting.sendReport", false);
-user_pref("browser.crashReports.unsubmittedCheck.autoSubmit2", false);
-
-/** DETECTION ***/
-user_pref("captivedetect.canonicalURL", "");
-user_pref("network.captive-portal-service.enabled", false);
-user_pref("network.connectivity-service.enabled", false);
-
-/****************************************************************************
- * SECTION: PESKYFOX                                                        *
-****************************************************************************/
-/** MOZILLA UI ***/
-user_pref("browser.privatebrowsing.vpnpromourl", "");
-user_pref("extensions.getAddons.showPane", false);
-user_pref("extensions.htmlaboutaddons.recommendations.enabled", false);
-user_pref("browser.discovery.enabled", false);
-user_pref("browser.shell.checkDefaultBrowser", false);
-user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons", false);
-user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features", false);
-user_pref("browser.preferences.moreFromMozilla", false);
-user_pref("browser.aboutConfig.showWarning", false);
-user_pref("browser.aboutwelcome.enabled", false);
-user_pref("browser.tabs.tabmanager.enabled", false);
-user_pref("browser.profiles.enabled", true);
-
-/** THEME ADJUSTMENTS ***/
-user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-user_pref("browser.compactmode.show", true);
-user_pref("browser.display.focus_ring_on_anything", true);
-user_pref("browser.display.focus_ring_style", 0);
-user_pref("browser.display.focus_ring_width", 0);
-user_pref("layout.css.prefers-color-scheme.content-override", 2);
-user_pref("browser.privateWindowSeparation.enabled", false); // WINDOWS
-user_pref("browser.newtabpage.activity-stream.newtabWallpapers.v2.enabled", true);
-
-/** COOKIE BANNER HANDLING ***/
-user_pref("cookiebanners.service.mode", 1);
-user_pref("cookiebanners.service.mode.privateBrowsing", 1);
-
-/** FULLSCREEN NOTICE ***/
-user_pref("full-screen-api.transition-duration.enter", "0 0");
-user_pref("full-screen-api.transition-duration.leave", "0 0");
-user_pref("full-screen-api.warning.delay", -1);
-user_pref("full-screen-api.warning.timeout", 0);
-
-/** URL BAR ***/
-user_pref("browser.urlbar.suggest.calculator", true);
-user_pref("browser.urlbar.unitConversion.enabled", true);
-user_pref("browser.urlbar.trending.featureGate", false);
-user_pref("dom.text_fragments.enabled", true);
-
-/** NEW TAB PAGE ***/
-user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
-user_pref("browser.newtabpage.activity-stream.showWeather", false);
-user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
-
-/** POCKET ***/
-user_pref("extensions.pocket.enabled", false);
-
-/** DOWNLOADS ***/
-user_pref("browser.download.manager.addToRecentDocs", false);
-
-/** PDF ***/
-user_pref("browser.download.open_pdf_attachments_inline", true);
-
-/** TAB BEHAVIOR ***/
-user_pref("browser.bookmarks.openInTabClosesMenu", false);
-user_pref("browser.menu.showViewImageInfo", true);
-user_pref("findbar.highlightAll", true);
-user_pref("layout.word_select.eat_space_to_next_word", false);
-
-/****************************************************************************
- * START: MY OVERRIDES                                                      *
-****************************************************************************/
-// visit https://github.com/yokoffing/Betterfox/wiki/Common-Overrides
-// visit https://github.com/yokoffing/Betterfox/wiki/Optional-Hardening
-// Enter your personal overrides below this line:
-
-// PREF: use DirectWrite everywhere like Chrome [WINDOWS]
-user_pref("gfx.font_rendering.cleartype_params.rendering_mode", 5);
-user_pref("gfx.font_rendering.cleartype_params.cleartype_level", 100);
-user_pref("gfx.font_rendering.cleartype_params.force_gdi_classic_for_families", "");
-user_pref("gfx.font_rendering.cleartype_params.force_gdi_classic_max_size", 6);
-user_pref("gfx.font_rendering.directwrite.use_gdi_table_loading", false);
-
-// PREF: restore login manager
-user_pref("signon.rememberSignons", true);
-
-// PREF: restore address and credit card manager
-user_pref("extensions.formautofill.addresses.enabled", true);
-user_pref("extensions.formautofill.creditCards.enabled", true);
-
-// PREF: restore search engine suggestions
-user_pref("browser.search.suggest.enabled", true);
-
-// PREF: enable HTTPS-Only Mode
-// Warn me before loading sites that don't support HTTPS
-// in both Normal and Private Browsing windows.
-user_pref("dom.security.https_only_mode", true);
-user_pref("dom.security.https_only_mode_error_page_user_suggestions", true);
-
-// PREF: set DoH provider
-user_pref("network.trr.uri", "https://dns.quad9.net/dns-query"); // Quad9
-
-// PREF: enforce DNS-over-HTTPS (DoH)
-user_pref("network.trr.mode", 3);
-
-// PREF: ask where to save every file
-user_pref("browser.download.useDownloadDir", false);
-
-// PREF: ask whether to open or save new file types
-user_pref("browser.download.always_ask_before_handling_new_types", true);
-
-/****************************************************************************
- * SECTION: SMOOTHFOX                                                       *
-****************************************************************************/
-// visit https://github.com/yokoffing/Betterfox/blob/main/Smoothfox.js
-// Enter your scrolling overrides below this line:
-
-user_pref("apz.overscroll.enabled", true); // DEFAULT NON-LINUX
-user_pref("general.smoothScroll", true); // DEFAULT
-user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);
-user_pref("general.smoothScroll.msdPhysics.enabled", true);
+ * Smooth Scrolling and Usability                                            *
+ ****************************************************************************/
+user_pref("general.smoothScroll", true); // Enable smooth scrolling
+user_pref("general.smoothScroll.msdPhysics.enabled", true); // Enable physics-based smooth scrolling
+user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12); 
 user_pref("general.smoothScroll.msdPhysics.motionBeginSpringConstant", 600);
 user_pref("general.smoothScroll.msdPhysics.regularSpringConstant", 650);
 user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaMS", 25);
-user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaRatio", "2");
 user_pref("general.smoothScroll.msdPhysics.slowdownSpringConstant", 250);
-user_pref("general.smoothScroll.currentVelocityWeighting", "1");
-user_pref("general.smoothScroll.stopDecelerationWeighting", "1");
-user_pref("mousewheel.default.delta_multiplier_y", 300);
+user_pref("mousewheel.default.delta_multiplier_y", 300); // Improve scroll speed
 
 /****************************************************************************
- * END: BETTERFOX                                                           *
-****************************************************************************/
+ * Passwords, Data Persistence, and Usability                                *
+ ****************************************************************************/
+user_pref("signon.rememberSignons", true); // Enable saving passwords
+user_pref("signon.autofillForms", true); // Automatically fill in login forms
+user_pref("privacy.clearOnShutdown.cookies", false); // Don't clear cookies on shutdown
+user_pref("privacy.clearOnShutdown.history", false); // Keep browsing history on shutdown
+user_pref("privacy.clearOnShutdown.sessions", false); // Keep session data on shutdown
+user_pref("places.history.enabled", true); // Enable browsing history
+user_pref("browser.sessionstore.resume_from_crash", true); // Resume session after crashes
+user_pref("browser.download.useDownloadDir", true); // Keep download directories remembered
+
+/****************************************************************************
+ * HTTPS and Security                                                        *
+ ****************************************************************************/
+user_pref("dom.security.https_only_mode", true); // Enforce HTTPS-only mode
+user_pref("network.stricttransportsecurity.preloadlist", true); // Preload HSTS list for enhanced HTTPS
+user_pref("security.ssl.treat_unsafe_negotiation_as_broken", true); // Warn on unsafe SSL negotiations
+user_pref("security.cert_pinning.enforcement_level", 2); // Enforce public key pinning for enhanced security
+user_pref("security.ssl.enable_ocsp_stapling", true); // Enable OCSP stapling to check certificates
+user_pref("security.ssl.disable_session_identifiers", true); // Disable SSL session IDs for better privacy
+user_pref("security.tls.enable_0rtt_data", false); // Disable early TLS data to prevent attacks
+user_pref("network.IDN_show_punycode", true); // Show Punycode to prevent IDN homograph phishing attacks
+
+/****************************************************************************
+ * Miscellaneous: General Improvements                                       *
+ ****************************************************************************/
+user_pref("browser.startup.page", 0); // Start with a blank page
+user_pref("browser.tabs.warnOnClose", false); // Don’t warn on closing multiple tabs
+user_pref("browser.tabs.closeWindowWithLastTab", false); // Don't close window when last tab is closed
+user_pref("browser.shell.checkDefaultBrowser", false); // Disable default browser check
+user_pref("browser.urlbar.suggest.quicksuggest.sponsored", false); // Disable sponsored search suggestions
+user_pref("browser.urlbar.suggest.quicksuggest.nonsponsored", false); // Disable non-sponsored suggestions
+user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false); // Disable Pocket recommendations
+user_pref("extensions.pocket.enabled", false); // Disable Pocket integration
+user_pref("signon.autofillForms.http", false); // Don't autofill login on HTTP pages
+user_pref("dom.allow_cut_copy", false); // Disable "copy to clipboard" via JavaScript
